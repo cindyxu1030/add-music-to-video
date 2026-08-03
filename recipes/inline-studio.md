@@ -119,7 +119,7 @@ The nodes are deliberately video-first: no prompt required, the cut is the conte
 want control, the difference between "good" and "exactly what I meant" is a short structured
 brief — genre, energy arc, the moment that must hit, the sounds that must not appear.
 
-[**sonilo-prompt-assist**](https://github.com/sonilo-ai/sonilo-prompt-assist) is a set of skills
+[**sonilo-ai/skills (music/prompting.md + sound-effects/prompting.md)**](https://github.com/sonilo-ai/skills) is a set of skills
 that teach an agent (or you) to write those briefs: `/sonilo:sonilo-prompting` for the
 pre-flight checks, `/sonilo:video-to-music` for style-prompt craft, `/sonilo:video-to-sfx` for
 sound-effects action maps. The briefs are plain text, so the technique transfers directly to the
