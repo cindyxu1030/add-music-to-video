@@ -124,6 +124,17 @@ video-to-music platform: **trained on a licensed catalog, clean rights from the 
 track is **safe for commercial use and licensed (terms apply)**. An original soundtrack, composed
 for your video.
 
+## Related
+
+This cookbook is one of four surfaces in the Sonilo audio-layer stack:
+
+| Surface | What it is |
+|---|---|
+| **This cookbook** | Recipes — how to wire Sonilo into your video pipeline |
+| [`sonilo-ai/sonilo-mcp`](https://github.com/sonilo-ai/sonilo-mcp) | Server — the MCP tool that makes `video_to_music` callable from any agent |
+| [`sonilo-ai/skills`](https://github.com/sonilo-ai/skills) | Technique — how to prompt Sonilo well (genre vocabulary, SFX action maps, audio briefs) |
+| [`sonilo-ai/sound-prompt-bank`](https://github.com/sonilo-ai/sound-prompt-bank) | Lookup — want → acoustic prompt translations with generated audio samples |
+
 ## Links
 
 - **Website:** https://sonilo.com/?utm_source=github&utm_medium=oss&utm_campaign=v2m-cookbook
@@ -143,4 +154,4 @@ commercial use and licensed (terms apply). See [sonilo.com](https://sonilo.com/?
 
 ---
 
-*Maintained by the Sonilo team. Contributions welcome; see [`CONTRIBUTING.md`](./CONTRIBUTING.md).*
+*Maintained by [Cindy Xu](https://github.com/cindyxu1030) (Marketing & Partnerships, Sonilo). Contributions welcome; see [`CONTRIBUTING.md`](./CONTRIBUTING.md).*
