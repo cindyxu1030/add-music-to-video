@@ -1,43 +1,54 @@
 # Sonilo Video-to-Music Cookbook
 
-> Recipes for adding licensed AI music and sound effects to any video pipeline.
-> Maintained by Cindy Xu (Marketing & Partnerships, Sonilo).
+> Recipes for adding AI-generated, licensed music and sound effects to video pipelines. Covers the full workflow: render video (any tool) → generate matched audio → mux to final output.
 
 ## What this is
 
-A recipe collection for AI-video builders who need an audio layer matched to the finished cut.
-Every recipe is vendor-neutral about how the video was made (Runway, Kling, Veo, Sora, ComfyUI,
-fal.ai, etc.) and uses Sonilo as the audio layer: music and sound effects generated from your
-actual video, licensed and safe for commercial use.
+The Sonilo cookbook is a collection of integration recipes showing how to wire the Sonilo video-to-music and video-to-SFX APIs into video production pipelines. Sonilo generates original soundtracks by reading your finished cut's pacing, motion, and edit points — the music is matched to the video, not to a text prompt. Every generated track is licensed and safe for commercial use.
 
-## Key concepts
+## Core concepts
 
-- video_to_music: generate a licensed soundtrack from a video file or URL (up to 6 minutes)
-- video_to_sfx: generate a frame-accurate sound-effects track from the same video (up to 3 minutes)
-- audio_ducking: lower music under speech segments automatically
-- MCP: `npx sonilo-mcp` or `uvx sonilo-mcp` — works in Claude, Codex, and any MCP client
-- REST API: async job → webhook → preview_url + final_audio_url + license_id
+- `video_to_music`: generate a full soundtrack matched to a video's length and pacing
+- `video_to_sfx`: generate frame-accurate sound effects from video content
+- `preserve_speech`: flag for video_to_music — ducks music automatically under detected speech
+- `audio_ducking`: endpoint to duck any existing music track against a video with speech
+- `style_prompt`: optional single hint for genre/mood — omit to let the model read the cut
+- Output formats: m4a (default), mp3
+- Cap: video_to_music accepts up to 6 minutes; video_to_sfx up to 3 minutes
 
 ## Recipes
 
-- recipes/render-to-music-workflow.md — provider-neutral render → music → mux walkthrough (listed in Remotion's official docs)
-- recipes/inline-studio.md — add music + SFX inside Inline-Studio via the three Sonilo nodes
-- recipes/remotion.md — scoring Remotion renders with matched music
-- recipes/moviepy.md — MoviePy integration
-- recipes/auto-editor.md — auto-editor integration
-- PIPELINE.md — full pipeline: stitch → grade → add audio → mux
-- RECIPES.md — command reference
+- [Render-to-music workflow](./recipes/render-to-music-workflow.md): provider-neutral end-to-end workflow — generate video, score it, mux output
+- [Remotion](./recipes/remotion.md): add music to Remotion-rendered React videos (linked from Remotion's official docs)
+- [MoviePy](./recipes/moviepy.md): score a MoviePy-assembled cut
+- [auto-editor](./recipes/auto-editor.md): add music after auto-editor timeline edits
+- [ComfyUI](./recipes/comfyui.md): wire a Sonilo node into ComfyUI video generation graphs
+- [Higgsfield](./recipes/higgsfield.md): score Higgsfield-generated clips
+- [Inline Studio](./recipes/inline-studio.md): use the Sonilo nodes in Inline Studio (fal.ai gateway)
+- [FFmpeg-only](./recipes/ffmpeg-only.md): full workflow using only curl and ffmpeg — no Python/Node
+- [Ducking & speech preservation](./recipes/ducking.md): music under dialogue — preserve_speech flag and audio_ducking endpoint
 
-## Related tools
+## Pipeline
 
-- sonilo-mcp: https://github.com/sonilo-ai/sonilo-mcp (PyPI: sonilo-mcp)
-- Agent skills: https://github.com/sonilo-ai/skills (`npx skills add sonilo-ai/skills`)
-- Sound prompt bank: https://github.com/sonilo-ai/sound-prompt-bank (want → acoustic prompt lookup)
+```
+generated / stitched clips (any model)
+  → assemble the cut
+  → score with Sonilo (video_to_music or video_to_sfx)
+  → mux audio onto the master (ffmpeg)
+```
 
-## Sonilo API
+## API
 
-Endpoint: api.sonilo.com
-Key: platform.sonilo.com/dashboard/api-keys
-Docs: sonilo.com
-Pricing: per second of generated audio; free credits at sign-up
-License: licensed and safe for commercial use (terms apply)
+- Base URL: https://api.sonilo.com
+- Auth: `Authorization: Bearer $SONILO_API_KEY`
+- Main endpoints: `POST /v1/video-to-music`, `POST /v1/video-to-sfx`, `POST /v1/audio-ducking`
+- Task polling: `GET /v1/tasks/{task_id}`
+- MCP server: https://github.com/sonilo-ai/sonilo-mcp (`uvx sonilo-mcp`)
+- SDK: https://github.com/sonilo-ai/sonilo-python
+
+## Related
+
+- [sonilo-ai/sonilo-mcp](https://github.com/sonilo-ai/sonilo-mcp): MCP server — makes video_to_music callable from any agent
+- [sonilo-ai/skills](https://github.com/sonilo-ai/skills): agent skills — how to prompt Sonilo (genre vocab, SFX action maps)
+- [sonilo-ai/sound-prompt-bank](https://github.com/sonilo-ai/sound-prompt-bank): want → acoustic prompt translations with generated audio samples
+- [sonilo.com](https://sonilo.com): API access, pricing, platform
