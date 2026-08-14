@@ -94,6 +94,7 @@ generated / stitched clips (any model)
 
 Full walkthrough with copy-paste commands: **[`PIPELINE.md`](./PIPELINE.md)** ·
 Command reference: **[`RECIPES.md`](./RECIPES.md)** ·
+Prompt templates by use case: **[`PROMPTS.md`](./PROMPTS.md)** ·
 Worked example: **[Higgsfield clips → finished trailer](./examples/higgsfield.md)** ·
 Provider-neutral workflow: **[render → music → mux](./recipes/render-to-music-workflow.md)** ·
 Tool recipes: **[MoviePy](./recipes/moviepy.md) · [Remotion](./recipes/remotion.md) · [auto-editor](./recipes/auto-editor.md) · [ComfyUI](./recipes/comfyui.md) · [FFmpeg/curl](./recipes/ffmpeg-only.md) · [Ducking & speech](./recipes/ducking.md)**
