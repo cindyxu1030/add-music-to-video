@@ -1,4 +1,4 @@
-# Sonilo Video-to-Music Cookbook
+# Add Music to Video — AI Video Music Cookbook
 
 **Fully licensed. Safe for commercial use.**
 
