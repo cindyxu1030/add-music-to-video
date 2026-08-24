@@ -45,7 +45,7 @@ matched to the finished cut instead of a random library track.
 | Surface | Best for | What you get |
 |---|---|---|
 | **MCP server** ([`sonilo-mcp`](https://github.com/sonilo-ai/sonilo-mcp)) | Agentic workflows (Claude, Codex, any MCP client) | `video_to_music` and `video_to_sfx` tools: hand them a video, get back matched audio |
-| **REST API** | Platforms & backends | Async job + webhook → `preview_url`, `final_audio_url`, and a per-track `license_id` (an auditable license record) |
+| **REST API** | Platforms & backends | Async job (poll or webhook) → a downloadable URL for the generated track |
 
 ## Sound effects too
 

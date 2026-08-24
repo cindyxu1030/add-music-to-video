@@ -74,8 +74,8 @@ video_to_music({
 // → "soundtrack.m4a"
 ```
 
-Or via the REST API (async job + webhook), which returns `preview_url`, `final_audio_url`, and a
-per-track `license_id`. Full API docs at [sonilo.com](https://sonilo.com/?utm_source=github&utm_medium=oss&utm_campaign=v2m-cookbook).
+Or via the REST API (async job, poll or webhook), which returns a downloadable URL for the
+generated track. Full API docs at [sonilo.com](https://sonilo.com/?utm_source=github&utm_medium=oss&utm_campaign=v2m-cookbook).
 
 **Mux the soundtrack onto the full-resolution master**, with a short tail fade, video untouched:
 
@@ -144,6 +144,6 @@ is non-linear, so encode once and measure, then adjust CRF up or down to hit you
   fixed-length bed with no video to match (a developer affordance).
 - **MCP (SFX, v0.2.1+):** `video_to_sfx(video_path? | video_url?, prompt?, output_directory?)` +
   `get_sfx_task(task_id)`; `text_to_sfx(prompt, duration)` for fixed-length effects. 3-minute video cap.
-- **REST:** music = async job + webhook → `preview_url`, `final_audio_url`, `license_id`;
+- **REST:** music = async job (poll or webhook) → downloadable track URL;
   SFX = task pipeline (`POST /v1/video-to-sfx` → poll `/v1/tasks/{task_id}`).
 - Get an API key and full docs at [sonilo.com](https://sonilo.com/?utm_source=github&utm_medium=oss&utm_campaign=v2m-cookbook).
