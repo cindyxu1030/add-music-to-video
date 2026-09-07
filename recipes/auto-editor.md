@@ -44,7 +44,8 @@ video_to_music({
 // → "soundtrack.m4a", matched to the tightened cut's length
 ```
 
-Or via the REST API (async job + webhook → `preview_url`, `final_audio_url`, `license_id`).
+Or via the REST API (`mode=async` → poll `GET /v1/tasks/{task_id}` → `audio[0].url`; see the
+[FFmpeg-only recipe](./ffmpeg-only.md)).
 
 ## 3. Mix the bed under the dialogue
 

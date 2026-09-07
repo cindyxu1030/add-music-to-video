@@ -12,8 +12,8 @@ The Sonilo cookbook is a collection of integration recipes showing how to wire t
 - `video_to_sfx`: generate frame-accurate sound effects from video content
 - `preserve_speech`: flag for video_to_music — ducks music automatically under detected speech
 - `audio_ducking`: endpoint to duck any existing music track against a video with speech
-- `style_prompt`: optional single hint for genre/mood — omit to let the model read the cut
-- Output formats: m4a (default), mp3
+- `prompt`: optional single hint for genre/mood — omit to let the model read the cut
+- Output formats: m4a (default), wav, mp3
 - Cap: video_to_music accepts up to 6 minutes; video_to_sfx up to 3 minutes
 
 ## Recipes

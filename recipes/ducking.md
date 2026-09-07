@@ -12,15 +12,17 @@ Music is **licensed and safe for commercial use (terms apply)**.
 | Generating music for footage with dialogue | Use `preserve_speech` at generation time |
 | You already have a music track | Use the `audio_ducking` endpoint to duck it |
 
-Both return a final audio file ready to mux. Use one or both in sequence.
+Approach A returns audio tracks to mux yourself; Approach B returns the finished mix (a new `.mp4`
+when the voice input is a video). Use one or both in sequence.
 
 ---
 
 ## Approach A: `preserve_speech` at generation time
 
-When calling `video_to_music`, set `preserve_speech: true`. Sonilo detects speech regions in the
-video and composes the music bed to sit below them — the generated track already has natural
-ducking baked in. No post-processing needed.
+When calling `video_to_music` on footage with dialogue, set `preserve_speech: true` to keep the
+source speech audible in the result (you also get a `vocals` speech stem and a ready-mixed `mux`),
+and `ducking: true` to duck the generated music under the voice — this adds a `ducked` track
+alongside the clean `audio` track. No post-processing needed.
 
 **MCP:**
 
@@ -28,9 +30,10 @@ ducking baked in. No post-processing needed.
 video_to_music({
   video_path: "interview.mp4",
   preserve_speech: true,
-  style_prompt: "warm acoustic background"   // optional
+  ducking: true,
+  prompt: "warm acoustic background"   // optional
 })
-// → "music_bed.m4a" — quiet under speech, full volume in pauses
+// → clean music + a ducked track (quiet under speech), plus a mux with the speech already mixed in
 ```
 
 **REST:**
@@ -38,13 +41,17 @@ video_to_music({
 ```bash
 curl -s -X POST https://api.sonilo.com/v1/video-to-music \
   -H "Authorization: Bearer $SONILO_API_KEY" \
-  -F "file=@interview.mp4" \
+  -F "video=@interview.mp4" \
   -F "preserve_speech=true" \
-  -F "style_prompt=warm acoustic background" \
+  -F "ducking=true" \
+  -F "prompt=warm acoustic background" \
+  -F "mode=async" \
   -F "output_format=m4a"
 ```
 
-Mux it:
+This returns `{"task_id": ...}` — poll `GET /v1/tasks/{task_id}` as in the
+[FFmpeg-only recipe](./ffmpeg-only.md). The clean music is `audio[0].url`; the ducked track is
+`ducked[0].url`. Save the ducked one as `music_bed.m4a`, then mux it:
 
 ```bash
 ffmpeg -y -i interview.mp4 -i music_bed.m4a \
@@ -59,8 +66,9 @@ video, vlog talking segments.
 ## Approach B: duck an existing music track
 
 If you already have a music file (library track, previously generated, client-supplied), use the
-`audio_ducking` endpoint. It takes your video + music and returns a ducked version of the music
-that automatically quiets under speech.
+`audio_ducking` endpoint. It takes a voice input (audio, or a video — its audio track is used as the
+voice) plus a music file, lowers the music wherever the voice speaks, and returns the mixed result.
+With a video as the voice input, the ducked mix comes back already muxed into a new `.mp4`.
 
 **REST:**
 
@@ -68,8 +76,8 @@ that automatically quiets under speech.
 # Submit
 RESPONSE=$(curl -s -X POST https://api.sonilo.com/v1/audio-ducking \
   -H "Authorization: Bearer $SONILO_API_KEY" \
-  -F "video=@interview.mp4" \
-  -F "audio=@music_track.m4a")
+  -F "voice_file=@interview.mp4" \
+  -F "music_file=@music_track.m4a")
 
 TASK_ID=$(echo "$RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin)['task_id'])")
 
@@ -81,16 +89,12 @@ while true; do
   echo "$STATE"; [ "$STATE" = "succeeded" ] && break; sleep 5
 done
 
-AUDIO_URL=$(echo "$S" | python3 -c "import sys,json; print(json.load(sys.stdin)['audio_url'])")
-curl -s -L -o ducked_music.m4a "$AUDIO_URL"
+OUT_URL=$(echo "$S" | python3 -c "import sys,json; print(json.load(sys.stdin)['output_url'])")
+curl -s -L -o final.mp4 "$OUT_URL"
 ```
 
-Mux:
-
-```bash
-ffmpeg -y -i interview.mp4 -i ducked_music.m4a \
-  -map 0:v -map 1:a -c:v copy -c:a aac -shortest final.mp4
-```
+No ffmpeg step: because the voice input was a video, `final.mp4` already carries the ducked mix
+(`output_type` is `video`). Pass an audio file as `voice_file` instead to get a `.wav` mix back.
 
 **When to use:** you own or licensed the music already and need it to sit under speech without
 manual keyframing. Also useful for matching a Sonilo-generated track to a second edit where speech
@@ -104,17 +108,12 @@ For maximum control — generate a music bed from the video, then run ducking as
 
 ```python
 # Step 1: generate music (no preserve_speech — full-volume track first)
-video_to_music(video_path="interview.mp4", style_prompt="warm cinematic documentary")
+video_to_music(video_path="interview.mp4", prompt="warm cinematic documentary")
 # → music_bed.m4a
 
 # Step 2: duck the generated track against the same video
-audio_ducking(video="interview.mp4", audio="music_bed.m4a")
-# → ducked_music_bed.m4a
-```
-
-```bash
-ffmpeg -y -i interview.mp4 -i ducked_music_bed.m4a \
-  -map 0:v -map 1:a -c:v copy -c:a aac -shortest final.mp4
+audio_ducking(voice_path="interview.mp4", music_path="music_bed.m4a")
+# → final .mp4 — the voice input was a video, so the ducked mix comes back muxed in
 ```
 
 This gives you a fully original, licensed track that's also precisely ducked to your exact edit.
