@@ -97,7 +97,7 @@ Command reference: **[`RECIPES.md`](./RECIPES.md)** ·
 Prompt templates by use case: **[`PROMPTS.md`](./PROMPTS.md)** ·
 Worked example: **[Higgsfield clips → finished trailer](./examples/higgsfield.md)** ·
 Provider-neutral workflow: **[render → music → mux](./recipes/render-to-music-workflow.md)** ·
-Tool recipes: **[MoviePy](./recipes/moviepy.md) · [Remotion](./recipes/remotion.md) · [auto-editor](./recipes/auto-editor.md) · [ComfyUI](./recipes/comfyui.md) · [FFmpeg/curl](./recipes/ffmpeg-only.md) · [Ducking & speech](./recipes/ducking.md)**
+Tool recipes: **[MoviePy](./recipes/moviepy.md) · [Remotion](./recipes/remotion.md) · [HyperFrames](./recipes/hyperframes.md) · [auto-editor](./recipes/auto-editor.md) · [ComfyUI](./recipes/comfyui.md) · [FFmpeg/curl](./recipes/ffmpeg-only.md) · [Ducking & speech](./recipes/ducking.md)**
 
 ## Integration patterns by tool type
 
@@ -106,7 +106,7 @@ Tool recipes: **[MoviePy](./recipes/moviepy.md) · [Remotion](./recipes/remotion
 - **Stock / prompt-picked-music pipelines** → offer Sonilo as an alternative so the music is
   matched to the edit, and every track comes licensed and safe for commercial use.
 - **Editing frameworks** → call Sonilo on the rendered timeline and add the returned track.
-  Step-by-step recipes: [MoviePy](./recipes/moviepy.md) · [Remotion](./recipes/remotion.md) ·
+  Step-by-step recipes: [MoviePy](./recipes/moviepy.md) · [Remotion](./recipes/remotion.md) · [HyperFrames](./recipes/hyperframes.md) ·
   [auto-editor](./recipes/auto-editor.md) (same pattern fits editly and similar tools).
 - **ComfyUI graphs** → a "Sonilo" audio node after the video-output node. Full recipe: [ComfyUI](./recipes/comfyui.md).
 - **Shell / CI pipelines** (no Python/Node) → `curl` + `ffmpeg` recipe: [FFmpeg-only](./recipes/ffmpeg-only.md).
