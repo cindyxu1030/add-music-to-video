@@ -12,18 +12,19 @@ The Sonilo cookbook is a collection of integration recipes showing how to wire t
 - `video_to_sfx`: generate frame-accurate sound effects from video content
 - `preserve_speech`: flag for video_to_music — ducks music automatically under detected speech
 - `audio_ducking`: endpoint to duck any existing music track against a video with speech
-- `style_prompt`: optional single hint for genre/mood — omit to let the model read the cut
-- Output formats: m4a (default), mp3
+- `prompt`: optional single hint for genre/mood — omit to let the model read the cut
+- Output formats: m4a (default), wav, mp3
 - Cap: video_to_music accepts up to 6 minutes; video_to_sfx up to 3 minutes
 
 ## Recipes
 
 - [Render-to-music workflow](./recipes/render-to-music-workflow.md): provider-neutral end-to-end workflow — generate video, score it, mux output
 - [Remotion](./recipes/remotion.md): add music to Remotion-rendered React videos (linked from Remotion's official docs)
+- [HyperFrames](./recipes/hyperframes.md): draft render → Sonilo → place the track as an <audio> clip → final render
 - [MoviePy](./recipes/moviepy.md): score a MoviePy-assembled cut
 - [auto-editor](./recipes/auto-editor.md): add music after auto-editor timeline edits
 - [ComfyUI](./recipes/comfyui.md): wire a Sonilo node into ComfyUI video generation graphs
-- [Higgsfield](./recipes/higgsfield.md): score Higgsfield-generated clips
+- [Higgsfield](./examples/higgsfield.md): score Higgsfield-generated clips
 - [Inline Studio](./recipes/inline-studio.md): use the Sonilo nodes in Inline Studio (fal.ai gateway)
 - [FFmpeg-only](./recipes/ffmpeg-only.md): full workflow using only curl and ffmpeg — no Python/Node
 - [Ducking & speech preservation](./recipes/ducking.md): music under dialogue — preserve_speech flag and audio_ducking endpoint

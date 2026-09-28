@@ -87,12 +87,12 @@ const generateMusic: GenerateMusic = async (renderedVideoPath) => {
 ```
 
 ```ts
-// generateMusic, Sonilo via REST (async job + webhook).
-// Returns preview_url, final_audio_url, and a per-track license_id.
+// generateMusic, Sonilo via REST (mode=async → poll GET /v1/tasks/{task_id}).
+// Pseudo-code: the finished task carries the generated track at audio[0].url.
 const generateMusic: GenerateMusic = async (renderedVideoPath) => {
-  const job = await sonilo.videoToMusic({ video: renderedVideoPath });
-  const done = await job.wait();          // resolves when the webhook fires
-  return download(done.final_audio_url);  // save to a local path
+  const task = await submitVideoToMusic(renderedVideoPath); // POST /v1/video-to-music, multipart: video + mode=async
+  const done = await pollTask(task.task_id);                // GET /v1/tasks/{task_id} until status === "succeeded"
+  return download(done.audio[0].url);                       // save to a local path
 };
 ```
 

@@ -48,11 +48,11 @@ After your video node (or a `Save Video` node if you save first):
 Node inputs:
 - **video** — connect the video tensor output or provide a file path
 - **api_key** — connect the API Key node
-- **style_prompt** — optional: `"warm cinematic"`, `"energetic electronic"`, `"ambient minimal"`.
+- **prompt** — optional: `"warm cinematic"`, `"energetic electronic"`, `"ambient minimal"`.
   Leave empty and the model reads the video's pacing and mood directly.
 - **output_format** — `m4a` (default)
 
-The node returns an **audio file path** and a **license_id**.
+The node returns an **audio file path**.
 
 ## 4. Add sound effects (optional)
 
@@ -100,7 +100,5 @@ Your fal API key handles billing; a separate Sonilo key is not required in that 
   scene boundaries and generate per-segment.
 - **Batch workflows:** the node handles one video per call. For batch generation, connect it inside
   a loop node or run the graph N times.
-- **Style prompt placement:** put the style prompt in a `Text` node wired to `style_prompt` so you
+- **Style prompt placement:** put the style prompt in a `Text` node wired to `prompt` so you
   can swap it without re-opening node settings.
-- **License ID:** the node outputs a `license_id` alongside the audio. Save it — it's the proof
-  of license for the generated track and ties the audio to your account's commercial use grant.
